@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,6 +29,7 @@ SECRET_KEY = '&5-q@)b##73p27g$%d2(gq0%!t!!8t+j=c&5uguibd^ik%y&zs'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+STATICFILES_DIRS = [STATIC_DIR]
 
 
 # Application definition
