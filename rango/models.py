@@ -7,8 +7,13 @@ class Category(models.Model):
     likes = models.PositiveIntegerField(default=0)
     slug=models.SlugField(unique=True)
     
+    def save(self, *args, **kwargs):
+        self.slug=slugify(self.name)
+        super(Category, self).save()
+    
     class Meta:
         verbose_name_plural = 'Categories'
+    
     def __str__(self):
         return self.name
     
