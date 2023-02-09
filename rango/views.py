@@ -41,10 +41,9 @@ def add_category(request):
         form =CategoryForm(request.POST)
         
         if form.is_valid():
-            print("HERHERERERERER")
             form.save(commit=True)
             
-            return redirect('')
+            return redirect('/rango/')
         else:
             print(form.errors)
             
