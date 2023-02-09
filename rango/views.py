@@ -3,6 +3,9 @@ from rango.models import Category, Page
 from rango.models import Category
 from rango.forms import CategoryForm
 from django.shortcuts import redirect
+from rango.forms import PageForm
+from django.urls import reverse
+
 def index(request):
     
     category_list = Category.objects.order_by('-likes')[:5]
@@ -53,20 +56,27 @@ def add_category(request):
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
-    except Category.DoesNotExist:
+    except Category.DoesNotExist:   
         category = None
-
+        
+    if category is None:
+        return redirect('/rango/')
+        
+    form = PageForm()
     if request.method == 'POST':
-        title = request.POST.get('title')
-        url = request.POST.get('url')
-
-        if category:
-            page = Page.objects.get_or_create(category=category, title=title, url=url)
-
-            return redirect(f'/rango/category/{category_name_slug}/')
+        form = PageForm(request.POST)
+        if form.is_valid():
+            if category:
+                page = form.save(commit=False)
+                page.category = category
+                page.views = 0
+                page.save()
+                return redirect(reverse('rango:show_category',
+                                        kwargs={'category_name_slug':
+                                                category_name_slug}))
         else:
-            return redirect('/rango/')
-
-    return render(request, 'rango/add_page.html', {'category': category})
-
-    
+            print(form.errors)
+            
+    context_dict = {'form': form, 'category': category}
+    return render(request, 'rango/add_page.html', context=context_dict)
+   
