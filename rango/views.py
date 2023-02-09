@@ -49,4 +49,24 @@ def add_category(request):
             
     return render(request, 'rango/add_category.html', {'form': form})
         
+        
+def add_page(request, category_name_slug):
+    try:
+        category = Category.objects.get(slug=category_name_slug)
+    except Category.DoesNotExist:
+        category = None
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        url = request.POST.get('url')
+
+        if category:
+            page = Page.objects.get_or_create(category=category, title=title, url=url)
+
+            return redirect(f'/rango/category/{category_name_slug}/')
+        else:
+            return redirect('/rango/')
+
+    return render(request, 'rango/add_page.html', {'category': category})
+
     
