@@ -17,7 +17,7 @@ from datetime import datetime
 
 
 def index(request):
-    
+    visitor_cookie_handler(request)
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
     context_dict = {}
@@ -30,12 +30,10 @@ def index(request):
     return response
 
 def about(request):
-    print(request.method)
-    print(request.user)
-    if request.session.test_cookie_worked():
-            print("TEST COOKIE WORKED!")
-            request.session.delete_test_cookie()
-    return render(request, 'rango/about.html', {})
+    visitor_cookie_handler(request)
+    visits = request.session['visits']
+
+    return render(request, 'rango/about.html', {'visits': visits})
 
     # return render(request, 'rango/about.html')
 
