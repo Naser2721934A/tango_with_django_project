@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -153,9 +154,16 @@ def user_login(request):
         return render(request, 'rango/login.html')
 
 
+def some_view(request):
+    if not request.user.is_authenticated():
+        return HttpResponse("You are logged in.")
+    else:
+        return HttpResponse("You are not logged in.")
 
 
-    
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!") 
     
     
     
