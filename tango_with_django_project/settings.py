@@ -33,6 +33,7 @@ STATICFILES_DIRS = [STATIC_DIR]
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 APPEND_SLASH=False
+LOGIN_URL = 'rango:login'
 
 # Application definition
 
